@@ -7,7 +7,6 @@ public class GameManager : MonoBehaviour {
     public int m_NumeroCanicas = 5;
     public int m_LanzamientoNumero = 0;
     //deberia tener algunos delay
-    public CameraControl m_CameraControl;
     public Text m_Score;
     public Text m_WinText;
     public Slider m_ForceSlider;
@@ -22,8 +21,7 @@ public class GameManager : MonoBehaviour {
     private int m_Puntos = 0;
     public Transform[] m_Objetivos;
     public void Awake(){
-        SetCameraInitial();
-        //SetCameraTarget();//quiza esto deberia estar dentro de spawnplayer();
+
     }
 
     public void Start(){
@@ -39,7 +37,6 @@ public class GameManager : MonoBehaviour {
         /*m_Player.GetComponent<PlayerThrow>().Setup();//quiza al instanciarse, solo deberia geenrar su propia bola
         m_CanicaPlayer = m_Player.GetComponent<PlayerThrow>().m_CanicaPlayer.GetComponent<Rigidbody>();//debieria haber una mejor forma de acceder a esta canica, quiza obtener la referencia a travez de una funcion de playerthrow
         */
-        SetCameraTarget();//quiza esto deberia estar dentro de spaenplayer();
     }
 
     public void SpawnObjectives(){//almacenados
@@ -75,13 +72,6 @@ public class GameManager : MonoBehaviour {
             }
         }
         return result;
-    }
-    public void SetCameraTarget(){
-        m_CameraControl.m_Player = m_Player;
-        m_CameraControl.SetToPlayer();
-    }
-    public void SetCameraInitial(){
-        m_CameraControl.SetStartPosition();
     }
 
     private void NuevoLanzamiento(){

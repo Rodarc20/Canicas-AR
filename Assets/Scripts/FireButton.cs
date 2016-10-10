@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.UI;
 using Vuforia;
 
 public class FireButton : MonoBehaviour, IVirtualButtonEventHandler {
     public GameObject buttonObject;
+    public Text text;
     public void Start(){
         //podria buscar aqui el boton, oo puedo asignarlo a travez del inspctor
         buttonObject = GameObject.Find("FireButton");
@@ -10,9 +12,11 @@ public class FireButton : MonoBehaviour, IVirtualButtonEventHandler {
     }
     
     public void OnButtonPressed(VirtualButtonAbstractBehaviour vab){
+        text.color = Color.white;
         print("Boton Presionado");
     }
     public void OnButtonReleased(VirtualButtonAbstractBehaviour vab){
+        text.color = Color.black;
         print("Boton Liberado");
     }
 }

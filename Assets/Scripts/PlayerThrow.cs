@@ -10,6 +10,8 @@ public class PlayerThrow : MonoBehaviour {
     public GameObject m_CanicaPlayerPrefab;
     public GameObject m_CanicaPlayer;//instancia de una canica de jugador
     private CanicaPlayer m_ScriptCP;
+    public Transform m_PuntoLanzaminento;//el lugar donde se instancian las canicas lanzadas
+    public Transform m_DireccionLanzamiento;//esta direccion la proporciona el Transform del cañón, como son referencias no es necesario actualizar, solo usar
 
     private string m_ThrowButton;
     private float m_CurrentThrowForce;

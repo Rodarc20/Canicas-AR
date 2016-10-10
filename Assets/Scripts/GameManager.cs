@@ -20,18 +20,19 @@ public class GameManager : MonoBehaviour {
     public Transform m_SpawnPosition;
     private int m_Puntos = 0;
     public Transform[] m_Objetivos;
+    public PlayerThrow m_PlayerThrow;//este se asigna en el inspector
     public void Awake(){
 
     }
 
     public void Start(){
-        SpawnPlayer();
+        //SpawnPlayer();//por ahora ejecutara otra funcion, de asociar scripts, o quiza ya esten asociados
         SpawnObjectives();
     }
     public void SpawnPlayer(){
-        m_Player = Instantiate(m_PlayerPrefab, m_SpawnPosition.position, m_SpawnPosition.rotation) as GameObject;
-        m_Player.GetComponent<PlayerAim>().m_CenterGameZone = m_GameZone.GetComponent<Transform>();
-        m_Player.GetComponent<PlayerAim>().m_SpawnPoint = m_SpawnPosition;
+        //m_Player = Instantiate(m_PlayerPrefab, m_SpawnPosition.position, m_SpawnPosition.rotation) as GameObject;
+        //m_Player.GetComponent<PlayerAim>().m_CenterGameZone = m_GameZone.GetComponent<Transform>();
+        //m_Player.GetComponent<PlayerAim>().m_SpawnPoint = m_SpawnPosition;
         m_Player.GetComponent<PlayerThrow>().m_Fuerza = m_ForceSlider;
         NuevoLanzamiento();
         /*m_Player.GetComponent<PlayerThrow>().Setup();//quiza al instanciarse, solo deberia geenrar su propia bola
@@ -75,8 +76,8 @@ public class GameManager : MonoBehaviour {
     }
 
     private void NuevoLanzamiento(){
-        m_Player.GetComponent<PlayerThrow>().Setup();//quiza al instanciarse, solo deberia geenrar su propia bola
-        m_CanicaPlayer = m_Player.GetComponent<PlayerThrow>().m_CanicaPlayer.GetComponent<Rigidbody>();//debieria haber una mejor forma de acceder a esta canica, quiza obtener la referencia a travez de una funcion de playerthrow
+        m_PlayerThrow.Setup();//quiza al instanciarse, solo deberia geenrar su propia bola
+        m_CanicaPlayer = m_PlayerThrow.m_CanicaPlayer.GetComponent<Rigidbody>();//debieria haber una mejor forma de acceder a esta canica, quiza obtener la referencia a travez de una funcion de playerthrow
     }
     void OnTriggerExit(Collider other){
         //cuando todas las canicas se detengan, el turno finalizo
@@ -98,7 +99,10 @@ public class GameManager : MonoBehaviour {
         //aqui debo verificar que todas las pelotas esten quietas para dar por finalizado el turno
         //tambien deberia comprobar que mi cnica haya sido disparada para incrementar el lnuemro lanzamiento
         bool finalizoLanzamiento = true;
+        if(m_CanicaPlayer){//en lugar de usar canica player, tambien debo usar los scripts
         finalizoLanzamiento = finalizoLanzamiento && (m_CanicaPlayer.IsSleeping() && m_CanicaPlayer.GetComponent<CanicaPlayer>().m_Fired);//di la calinca no se mueve, y ya fue disparada,entoces debe finalizar el alnzamineto
+        }
+        //por ahora evito erroes con el if:while
         //print("Jugador: " + finalizoLanzamiento);
 
         for(int i = 0; i < m_Objetivos.Length; i++){
@@ -123,3 +127,5 @@ public class GameManager : MonoBehaviour {
         }//revisar las logicas, a veces no entra en esta cosa
     }
 }   
+//para este juego ya no instancion nada solo lo controlo, siempre estara instancionado el primer jugador, es decir el del cañon
+//por ahora quien tendra los scripts del jugador sera el segundo marcador, si no fucniona bien, por eso de tracker y no, entonces creare unbjeto jugadro dentro de este, que tendra dentro del modelo del tanque y los scripts necesarios

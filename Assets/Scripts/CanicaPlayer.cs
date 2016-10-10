@@ -6,19 +6,17 @@ public class CanicaPlayer : MonoBehaviour {
     //public bool m_Move;//si se esta moviendo, hago esto para evitar comprobar el rigidbody y usar la funcion IsSleeping()
     //aunq ue deberia llamar a issleeping, por que el problemas es que algun choque que no controlo, puede mover la pelota, pero no afectar a esta variable, lo cual traeria errores
     public Rigidbody m_Rigidbody;
-    public Transform m_Player;//este es la posicion del Jugador
-    public PlayerThrow m_PlayerThrow;
+    public PlayerThrow m_PlayerThrow;//no es usado
     public float m_Desaceleracion = 0f;
     public void Awake(){
         m_Rigidbody = GetComponent<Rigidbody>();
         m_Fired = false;
         //m_Move = false;
     }
-    public void Update(){
-        if(!m_Fired){
-            transform.position = m_Player.position;//con esto las canicas disparadas, no siguen la traslacion del jugador
-        }
-    }
+    /*public void Update(){
+        //if(!m_Fired){
+        //}
+    }*/
     public void FixedUpdate(){
         if(m_Fired){
             Vector3 direccion = m_Rigidbody.velocity.normalized;
@@ -38,7 +36,7 @@ public class CanicaPlayer : MonoBehaviour {
         }
     }
 
-    public void Fire(Vector3 fuerza){
+    public void Fire(Vector3 fuerza){//este vector esta compuesto por direccion y velocidad
         if(!m_Fired){
             m_Fired = true;
             //m_Move = true;
@@ -46,9 +44,5 @@ public class CanicaPlayer : MonoBehaviour {
             //deberia descativar el script PlayerThrow, y activarse denuevo cuando se cree una nuva canica
         }
     }
-
-    /*public void OnTriggerEnter(Collider other){//esto es para mejorar un poco el sistema de colisiones
-
-    }*/
 }
 //basicamente es para que la canica siga la psicion del jugador cuand este se traslada, tambien podria hacer que controle la fuerza a tra vez de este script, y ya solo player throw, se encarga de transmitir la informacion necesaria

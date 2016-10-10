@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour {
 
     public void Start(){
         //SpawnPlayer();//por ahora ejecutara otra funcion, de asociar scripts, o quiza ya esten asociados
+        m_PlayerThrow.m_Fuerza = m_ForceSlider;
         SpawnObjectives();
     }
     public void SpawnPlayer(){
@@ -34,7 +35,7 @@ public class GameManager : MonoBehaviour {
         //m_Player.GetComponent<PlayerAim>().m_CenterGameZone = m_GameZone.GetComponent<Transform>();
         //m_Player.GetComponent<PlayerAim>().m_SpawnPoint = m_SpawnPosition;
         m_Player.GetComponent<PlayerThrow>().m_Fuerza = m_ForceSlider;
-        NuevoLanzamiento();
+        //NuevoLanzamiento();
         /*m_Player.GetComponent<PlayerThrow>().Setup();//quiza al instanciarse, solo deberia geenrar su propia bola
         m_CanicaPlayer = m_Player.GetComponent<PlayerThrow>().m_CanicaPlayer.GetComponent<Rigidbody>();//debieria haber una mejor forma de acceder a esta canica, quiza obtener la referencia a travez de una funcion de playerthrow
         */
@@ -77,7 +78,7 @@ public class GameManager : MonoBehaviour {
 
     private void NuevoLanzamiento(){
         m_PlayerThrow.Setup();//quiza al instanciarse, solo deberia geenrar su propia bola
-        m_CanicaPlayer = m_PlayerThrow.m_CanicaPlayer.GetComponent<Rigidbody>();//debieria haber una mejor forma de acceder a esta canica, quiza obtener la referencia a travez de una funcion de playerthrow
+        //m_CanicaPlayer = m_PlayerThrow.m_CanicaPlayer.GetComponent<Rigidbody>();//debieria haber una mejor forma de acceder a esta canica, quiza obtener la referencia a travez de una funcion de playerthrow
     }
     void OnTriggerExit(Collider other){
         //cuando todas las canicas se detengan, el turno finalizo
@@ -98,9 +99,13 @@ public class GameManager : MonoBehaviour {
     public void FixedUpdate(){
         //aqui debo verificar que todas las pelotas esten quietas para dar por finalizado el turno
         //tambien deberia comprobar que mi cnica haya sido disparada para incrementar el lnuemro lanzamiento
-        bool finalizoLanzamiento = true;
-        if(m_CanicaPlayer){//en lugar de usar canica player, tambien debo usar los scripts
-        finalizoLanzamiento = finalizoLanzamiento && (m_CanicaPlayer.IsSleeping() && m_CanicaPlayer.GetComponent<CanicaPlayer>().m_Fired);//di la calinca no se mueve, y ya fue disparada,entoces debe finalizar el alnzamineto
+        bool finalizoLanzamiento = m_PlayerThrow.m_Throwed;//estaba entrue, deberia poner si el script lanzar ha lanzado
+        //if(m_CanicaPlayer){//en lugar de usar canica player, tambien debo usar los scripts
+        if(m_PlayerThrow.m_CanicaPlayer){//en lugar de usar canica player, tambien debo usar los scripts
+        //si exite esta canica, es por que fue disparada, no necesito hacer la comprobacion en CanicaPlayer, ese script al final quedo solo para aplicar algunas fuerzas
+            finalizoLanzamiento = finalizoLanzamiento && (m_PlayerThrow.m_CanicaPlayer.GetComponent<Rigidbody>().IsSleeping() && m_PlayerThrow.m_CanicaPlayer.GetComponent<CanicaPlayer>().m_Fired);//di la calinca no se mueve, y ya fue disparada,entoces debe finalizar el alnzamineto
+        //finalizoLanzamiento = finalizoLanzamiento && m_CanicaPlayer.IsSleeping();//di la calinca no se mueve, y ya fue disparada,entoces debe finalizar el alnzamineto
+        //no se si sea buena idea quitar el fired por lo del issleepong, en un pequeño instante, antes de aplicar la fuerza
         }
         //por ahora evito erroes con el if:while
         //print("Jugador: " + finalizoLanzamiento);
@@ -114,12 +119,12 @@ public class GameManager : MonoBehaviour {
         }
         if(finalizoLanzamiento){
             print("Finalizo Lanzamiento");
-            Destroy(m_CanicaPlayer.gameObject, 1f);//para que desaparezcan dos segundo despues//esto funciona en Colliders no en Rigidbody por lo visto
+            Destroy(m_PlayerThrow.m_CanicaPlayer.gameObject, 1f);//para que desaparezcan dos segundo despues//esto funciona en Colliders no en Rigidbody por lo visto
 
             /*m_Player.GetComponent<PlayerThrow>().Setup();//quiza no deberia reinicar la camara, o tener dos funcines, una para reinicar balon, y otra para reiniciar posicion
             m_CanicaPlayer = m_Player.GetComponent<PlayerThrow>().m_CanicaPlayer.GetComponent<Rigidbody>();//debieria haber una mejor forma de acceder a esta canica, quiza obtener la referencia a travez de una funcion de playerthrow
             */
-            NuevoLanzamiento();
+            NuevoLanzamiento();//en realida no prepara uno nuevo, solo regresa al estado inical
             //estas dos lineas siempre van juntas, deberia ponerlas dentro d una funcion
             m_LanzamientoNumero++;//este incremento no ha funcionado
             SetTextScore();

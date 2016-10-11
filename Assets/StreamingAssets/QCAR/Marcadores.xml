@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
   <Tracking>
+    <ImageTarget name="MarcadorFireTam1" size="1.000000 1.000000" />
+    <ImageTarget name="MarcadorFireTam5" size="5.000000 5.000000" />
+    <ImageTarget name="MarcadorFireTam10" size="10.000000 10.000000" />
     <ImageTarget name="MarcadorCampoTam10" size="10.000000 10.000000" />
     <ImageTarget name="MarcadorCanonTam10" size="10.000000 10.000000" />
     <ImageTarget name="MarcadorCampoTam1" size="1.000000 1.000000" />

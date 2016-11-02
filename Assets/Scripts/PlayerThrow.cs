@@ -56,7 +56,7 @@ public class PlayerThrow : MonoBehaviour {
             Fire();
         }
         //Touch
-        if(Input.touchCount > 0){
+        if(Input.touchCount > 0 && Vector2.Distance(Input.GetTouch(0).position, Camera.main.WorldToScreenPoint(transform.position)) <= 50f){//ese valor de 50 se debe calcular no se si en base al tamaño del dedo, o del cañon, por ahora provar
             if(m_CurrentThrowForce >= m_MaxForce && !m_Throwed){//si la fuerza esa mayor que el maximo, y aun no he disparado, entonces solo establesco el current en el max
                 m_CurrentThrowForce = m_MaxForce;//se dispara solo cuando el jugador suslete la tecla
                 m_Fuerza.value = m_CurrentThrowForce;//hay problemas con este if,buscar solucion

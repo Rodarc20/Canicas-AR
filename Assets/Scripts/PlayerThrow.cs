@@ -55,6 +55,24 @@ public class PlayerThrow : MonoBehaviour {
             //m_Throwed = true;
             Fire();
         }
+        //Touch
+        if(Input.touchCount > 0){
+            if(m_CurrentThrowForce >= m_MaxForce && !m_Throwed){//si la fuerza esa mayor que el maximo, y aun no he disparado, entonces solo establesco el current en el max
+                m_CurrentThrowForce = m_MaxForce;//se dispara solo cuando el jugador suslete la tecla
+                m_Fuerza.value = m_CurrentThrowForce;//hay problemas con este if,buscar solucion
+            }
+            else if(Input.GetTouch(0).phase == TouchPhase.Began && !m_Throwed){
+                m_CurrentThrowForce = m_MinForce;
+                m_Fuerza.value = m_CurrentThrowForce;
+            }
+            else if(Input.GetTouch(0).phase != TouchPhase.Ended && !m_Throwed){
+                m_CurrentThrowForce += m_ChargeSpeed * Time.deltaTime;
+                m_Fuerza.value = m_CurrentThrowForce;
+            }
+            if(Input.GetTouch(0).phase == TouchPhase.Ended && !m_Throwed){
+                Fire();
+            }
+        }
     }
     private void Fire(){
         m_CanicaPlayer = Instantiate(m_CanicaPlayerPrefab, m_PuntoLanzaminento.position, m_PuntoLanzaminento.rotation) as GameObject;
